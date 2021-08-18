@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <title>render-audio demo</title>
+    <link rel="stylesheet" href="app.css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <div id="status-message" class="hidden"></div>
+
+    <h1 class="title">
+      render-audio demo
+    </h1>
+
+    <div class="intro-description">A demo of <a href="https://github.com/jimkang/render-audio">render-audio</a>.</div>
+
+    <label for="file1">Pick an audio file to see it rendered.</label>
+    <input id="file1" class="input-source" type="file" accept="audio/*, .m4a,.ogg,.mp3,.wav" />
+
+    <div class="result file1-audio hidden">
+      <audio class="file1-audio-player" controls></audio>
+      <canvas class="waveform-0" width="500" height="200"></canvas>
+      <canvas class="waveform-1" width="500" height="200"></canvas>
+    </div>
+
+    <div id="version-info"></div>
+
+    <script src="demo.js"></script>
+  </body>
+</html>
