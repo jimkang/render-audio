@@ -1,7 +1,7 @@
 import handleError from 'handle-error-web';
 import { version } from './package.json';
 import { renderSources } from './renderers/render-sources';
-import { renderResultAudio } from './index';
+import { renderAudio } from './index';
 import { decodeArrayBuffer } from './tasks/decode-array-buffer';
 import { queue } from 'd3-queue';
 
@@ -27,7 +27,7 @@ import { queue } from 'd3-queue';
       return;
     }
 
-    renderResultAudio({
+    renderAudio({
       audioBuffer: audioBuffers[0],
       containerSelector: '.file1-audio',
       onError: handleError,

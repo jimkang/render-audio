@@ -5,10 +5,14 @@ import { decodeArrayBuffer } from './tasks/decode-array-buffer';
 import ep from 'errorback-promise';
 import { to } from 'await-to-js';
 
-export async function renderResultAudio({
+export async function renderAudio({
   audioBuffer,
   blob,
   containerSelector,
+  leftColor= 'hsl(80, 50%, 60%)',
+  rightColor = 'hsl(10, 50%, 60%)',
+  waveformWidth= 800,
+  waveformHeight= 100,
   onError
 }) {
   if (!blob) {
@@ -31,16 +35,34 @@ export async function renderResultAudio({
   var objectURL = URL.createObjectURL(blob);
 
   var containerSel = select(containerSelector);
-  containerSel.select('audio').attr('src', objectURL);
+  var playerSel = establish({
+    parentSel: containerSel,
+    childTag: 'audio',
+    childSelector: 'audio',
+    initFn: sel => sel.attr('controls', '')
+  });
+  playerSel.attr('src', objectURL);
 
   const chCount = audioBuffer.numberOfChannels;
 
+  containerSel.selectAll('canvas').style('display', 'none');
+
   for (let chIndex = 0; chIndex < chCount; ++chIndex) {
     let channelData = audioBuffer.getChannelData(chIndex);
+    const canvasClass = `waveform-${chIndex}`;
+
+    var canvasSel = establish({
+      parentSel: containerSel,
+      childTag: 'canvas',
+      childSelector: '.' + canvasClass,
+      initFn: sel => sel.classed(canvasClass, true).classed('waveform', true).attr('width', waveformWidth).attr('height', waveformHeight)
+    });
+    canvasSel.style('display', 'block');
+
     drawWaveform({
-      canvasSel: containerSel.select(`.waveform-${chIndex}`),
+      canvasSel,
       channelData,
-      color: chIndex === 0 ? 'hsl(80, 50%, 60%)' : 'hsl(10, 50%, 60%)',
+      color: chIndex === 0 ? leftColor : rightColor
     });
   }
 
@@ -70,4 +92,21 @@ function drawWaveform({ canvasSel, channelData, color }) {
     canvasCtx.lineTo(x(i), yPos);
   }
   canvasCtx.stroke();
+}
+
+// parentSel should be a d3 selection.
+export function establish({
+  parentSel,
+  childTag,
+  childSelector,
+  initFn
+}) {
+  var childSel = parentSel.select(childSelector);
+  if (childSel.empty()) {
+    childSel = parentSel.append(childTag);
+    if (initFn) {
+      initFn(childSel);
+    }
+  }
+  return childSel;
 }
