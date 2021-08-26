@@ -28,6 +28,8 @@ The waveform canvas elements added or updated will have the classes `waveform-0`
       border: dashed 2px #555;
     }
 
+To fit the width of the waveform canvas to its parent element, pass `fitToParentWidth: true`. However, the parent width changes, the canvas width will not change width it.
+
 ## Running the demo
 
 Once you have this source code on your computer, you can get it running by doing the following.

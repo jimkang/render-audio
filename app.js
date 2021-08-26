@@ -31,6 +31,7 @@ import { queue } from 'd3-queue';
       audioBuffer: audioBuffers[0],
       containerSelector: '.file1-audio',
       onError: handleError,
+      fitToParentWidth: true,
     });
   }
 })();

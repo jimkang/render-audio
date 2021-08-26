@@ -4,15 +4,17 @@ import toWav from 'audiobuffer-to-wav';
 import { decodeArrayBuffer } from './tasks/decode-array-buffer';
 import ep from 'errorback-promise';
 import { to } from 'await-to-js';
+import curry from 'lodash.curry';
 
 export async function renderAudio({
   audioBuffer,
   blob,
   containerSelector,
-  leftColor= 'hsl(80, 50%, 60%)',
+  leftColor = 'hsl(80, 50%, 60%)',
   rightColor = 'hsl(10, 50%, 60%)',
-  waveformWidth= 800,
-  waveformHeight= 100,
+  waveformWidth = 800,
+  waveformHeight = 100,
+  fitToParentWidth = false,
   onError
 }) {
   if (!blob) {
@@ -30,6 +32,11 @@ export async function renderAudio({
       return;
     }
     audioBuffer = values[0];
+  }
+
+  var width = waveformWidth;
+  if (fitToParentWidth) {
+    width = document.body.getBoundingClientRect().width;
   }
 
   var objectURL = URL.createObjectURL(blob);
@@ -55,7 +62,7 @@ export async function renderAudio({
       parentSel: containerSel,
       childTag: 'canvas',
       childSelector: '.' + canvasClass,
-      initFn: sel => sel.classed(canvasClass, true).classed('waveform', true).attr('width', waveformWidth).attr('height', waveformHeight)
+      initFn: curry(initCanvas)(canvasClass, width),
     });
     canvasSel.style('display', 'block');
 
@@ -67,6 +74,10 @@ export async function renderAudio({
   }
 
   containerSel.classed('hidden', false);
+
+  function initCanvas(canvasClass, width, sel) {
+    sel.classed(canvasClass, true).classed('waveform', true).attr('width', width).attr('height', waveformHeight);
+  }
 }
 
 function drawWaveform({ canvasSel, channelData, color }) {
