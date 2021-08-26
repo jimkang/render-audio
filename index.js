@@ -87,6 +87,7 @@ export async function renderAudio({
 
     var canvasCtx = canvasSel.node().getContext('2d', { alpha: false });
     canvasCtx.lineWidth = 1;
+    canvasCtx.fillStyle = '#333';
 
     draw();
 
@@ -120,6 +121,7 @@ export async function renderAudio({
     function drawWaveform({ channelData, color,transform 
     }) {
       canvasCtx.clearRect(0, 0, width, height);
+      canvasCtx.fillRect(0, 0, width, height);
 
       var x = scaleLinear().domain([0, channelData.length]).range([0, width]);
       // In canvas, and GUIs in general, remember:
