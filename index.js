@@ -101,7 +101,7 @@ export async function renderAudio({
 
     function setUpZoom(canvas, draw, initialTransform = undefined) {
       var zoom = Zoom()
-        .scaleExtent([1, 4])
+        .scaleExtent([1, 8])
         .on('zoom', zoomed);
 
       var canvasSel = select(canvas);
