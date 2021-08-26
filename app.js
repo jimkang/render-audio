@@ -32,6 +32,7 @@ import { queue } from 'd3-queue';
       containerSelector: '.file1-audio',
       onError: handleError,
       fitToParentWidth: true,
+      zoomable: true,
     });
   }
 })();

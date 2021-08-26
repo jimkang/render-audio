@@ -28,7 +28,9 @@ The waveform canvas elements added or updated will have the classes `waveform-0`
       border: dashed 2px #555;
     }
 
-To fit the width of the waveform canvas to its parent element, pass `fitToParentWidth: true`. However, the parent width changes, the canvas width will not change width it.
+To fit the width of the waveform canvas to its parent element, pass `fitToParentWidth: true`. However, if the parent width changes, the canvas width will not change width it.
+
+If you want to allow the user to be able to zoom and pan with the mouse or touch, pass `zoomable: true`.
 
 ## Running the demo
 
